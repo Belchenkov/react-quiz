@@ -26,20 +26,3 @@
 .error {
     color: rgba(240, 87, 108, .7);
 }
-
-.FinishedQuiz .btn {
-    border-radius: 5px;
-    color: #fff;
-    background: green;
-    padding: 10px 15px;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color .3s ease-in-out;
-}
-
-.FinishedQuiz .btn:hover {
-    transition: background-color .3s ease-in-out;
-    background: #70974c;
-}
