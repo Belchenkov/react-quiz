@@ -7,14 +7,20 @@ class Quiz extends Component {
     state = {
         quiz: [
             {
+                question: 'Какой самый лучший язык программирования для веба?',
+                rightAnswerId: 1,
                 answers: [
-                    {text: 'Вопрос 1'},
-                    {text: 'Вопрос 2'},
-                    {text: 'Вопрос 3'},
-                    {text: 'Вопрос 4'}
+                    {id: 1, text: 'JavaScript'},
+                    {id: 2, text: 'PHP'},
+                    {id: 3, text: 'Python'},
+                    {id: 4, text: 'Ruby'}
                 ]
             }
         ]
+    };
+
+    onAnswerClickHandler = (answerId) => {
+        console.log('Answer Id: ', answerId);
     };
 
     render () {
@@ -24,6 +30,8 @@ class Quiz extends Component {
                     <h1>Ответьте на все вопросы</h1>
                     <ActiveQuiz
                         answers={this.state.quiz[0].answers}
+                        question={this.state.quiz[0].question}
+                        onAnswerClick={this.onAnswerClickHandler}
                     />
                 </div>
             </div>
