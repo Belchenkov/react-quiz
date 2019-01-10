@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import classes from './Auth.css';
 
 import Button from '../../components/UI/Button/Button';
+import Input from '../../components/UI/Input/Input';
 
 class Auth extends Component {
     loginHandler = () => {
@@ -25,9 +26,14 @@ class Auth extends Component {
                     <h1>Авторизация</h1>
 
                     <form onSubmit={this.submitHandler} className={classes.AuthForm}>
-                        <div>
-                            <input type="text" />
-                            <input type="text" />
+                        <div className={classes.AuthInputsBlock}>
+                            <Input
+                                label="Email"
+                            />
+                            <Input
+                                label="Пароль"
+                                errorMessage={'TEST'}
+                            />
                         </div>
                         <div className={classes.AuthButtonsBlock}>
                             <Button type="success" onClick={this.loginHandler}>Войти</Button>

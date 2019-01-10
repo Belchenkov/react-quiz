@@ -28,6 +28,10 @@
     border-radius: 5px;
 }
 
+.AuthInputsBlock {
+    width: 100%;
+}
+
 .AuthButtonsBlock {
     display: flex;
     justify-content: space-between;
