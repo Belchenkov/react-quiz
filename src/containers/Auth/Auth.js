@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import is from 'is_js';
 import classes from './Auth.css';
 
 import Button from '../../components/UI/Button/Button';
@@ -46,8 +47,41 @@ class Auth extends Component {
         e.preventDefault();
     };
 
+    validateControl(value, validation) {
+        if (!validation) {
+            return true;
+        }
+
+        let isValid = true;
+
+        if (validation.required) {
+            isValid = value.trim() !== '' && isValid;
+        }
+
+        if (validation.email) {
+            isValid = is.email(value) && isValid;
+        }
+
+        if (validation.minLength) {
+            isValid = value.length >= validation.minLength && isValid;
+        }
+
+        return isValid;
+    }
+
     onChangeHandler = (event, controlName) => {
-        console.log(`${controlName}: `, event.target.value);
+        const formControls = { ...this.state.formControls };
+        const control = { ...formControls[controlName] };
+
+        control.value = event.target.value;
+        control.touched = true;
+        control.valid = this.validateControl(control.value, control.validation);
+
+        formControls[controlName] = control;
+
+        this.setState({
+            formControls
+        });
     };
 
     renderInputs() {
@@ -76,17 +110,10 @@ class Auth extends Component {
                 <div>
                     <h1>Авторизация</h1>
 
-                    { this.renderInputs() }
 
                     <form onSubmit={this.submitHandler} className={classes.AuthForm}>
                         <div className={classes.AuthInputsBlock}>
-                            <Input
-                                label="Email"
-                            />
-                            <Input
-                                label="Пароль"
-                                errorMessage={'TEST'}
-                            />
+                             { this.renderInputs() }
                         </div>
                         <div className={classes.AuthButtonsBlock}>
                             <Button type="success" onClick={this.loginHandler}>Войти</Button>
