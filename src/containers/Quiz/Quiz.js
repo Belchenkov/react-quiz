@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
+import axios from '../../axios/axios-quiz';
+
 import classes from './Quiz.css';
 
 import ActiveQuiz from "../../components/ActiveQuiz/ActiveQuiz";
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
+import Loader from "../../components/UI/Loader/Loader";
 
 class Quiz extends Component {
     state = {
@@ -10,30 +13,8 @@ class Quiz extends Component {
         isFinished: false,
         activeQuestion: 0,
         answerState: null, // {[id]: 'success' || 'error}
-        quiz: [
-            {
-                id: 1,
-                question: 'Какой самый лучший язык программирования для веба?',
-                rightAnswerId: 1,
-                answers: [
-                    {id: 1, text: 'JavaScript'},
-                    {id: 2, text: 'PHP'},
-                    {id: 3, text: 'Python'},
-                    {id: 4, text: 'Ruby'}
-                ]
-            },
-            {
-                id: 2,
-                question: 'FTP - это:',
-                rightAnswerId: 3,
-                answers: [
-                    {id: 1, text: 'почтовый клиент'},
-                    {id: 2, text: 'программа IP-телефонии'},
-                    {id: 3, text: 'протокол передачи файлов'},
-                    {id: 4, text: 'новая модель тостера'}
-                ]
-            }
-        ]
+        quiz: [],
+        loading: true
     };
 
     onAnswerClickHandler = (answerId) => {
@@ -92,8 +73,19 @@ class Quiz extends Component {
         })
     };
 
-    componentDidMount () {
-        console.log('Quiz ID = ', this.props.match.params.id);
+    async componentDidMount () {
+       try {
+            const response = await axios.get(`/quizes/${this.props.match.params.id}.json`);
+            const quiz = response.data;
+
+            this.setState({
+                quiz,
+                loading: false
+            });
+
+       }catch (err) {
+           console.error(err);
+       }
     }
 
     render () {
@@ -101,8 +93,11 @@ class Quiz extends Component {
             <div className={classes.Quiz}>
                 <div className={classes.QuizWrapper}>
                     <h1>Ответьте на все вопросы</h1>
+
                     {
-                        this.state.isFinished
+                        this.state.loading
+                            ? <Loader />
+                            : this.state.isFinished
                             ? <FinishedQuiz
                                 results={this.state.results}
                                 quiz={this.state.quiz}
