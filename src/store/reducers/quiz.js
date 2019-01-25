@@ -1,9 +1,14 @@
-import {FETCH_QUIZES_ERROR, FETCH_QUIZES_START, FETCH_QUIZES_SUCCESS} from "../actions/actionTypes";
+import {FETCH_QUIZ_SUCCESS, FETCH_QUIZES_ERROR, FETCH_QUIZES_START, FETCH_QUIZES_SUCCESS} from "../actions/actionTypes";
 
 const initialState = {
     quizes: [],
     loading: false,
-    error: null
+    error: null,
+    results: {}, // {[id]: success || error}
+    isFinished: false,
+    activeQuestion: 0,
+    answerState: null, // {[id]: 'success' || 'error}
+    quiz: null
 };
 
 export default function quizReducer(state = initialState, action) {
@@ -18,6 +23,12 @@ export default function quizReducer(state = initialState, action) {
                 ...state,
                 loading: false,
                 quizes: action.quizes
+            };
+        case FETCH_QUIZ_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                quiz: action.quiz
             };
         case FETCH_QUIZES_ERROR:
             return {
