@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import classes from './QuizCreator.css';
 import { createControl, validate, validateForm } from '../../form/formFramework';
 import Auxilary from '../../hoc/Auxillary/Auxilary';
+import axios from '../../axios/axios-quiz';
 
 import Button from '../../components/UI/Button/Button';
 import Input from "../../components/UI/Input/Input";
@@ -69,10 +70,21 @@ class QuizCreator extends Component {
         });
     };
 
-    createQuizHandler = e => {
+    createQuizHandler = async e => {
         e.preventDefault();
 
-        console.log(this.state.quiz);
+        try {
+            await  axios.post('quizes.json', this.state.quiz);
+
+            this.setState({
+                quiz: [],
+                isFormValid: false,
+                rightAnswerId: 1,
+                formControls: createFormControls()
+            });
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     changeHandler = (value, controlName) => {
@@ -124,10 +136,10 @@ class QuizCreator extends Component {
             value={this.state.rightAnswerId}
             onChange={this.selectChangeHandler}
             options={[
-                { text: 'Текст 1', value: 1 },
-                { text: 'Текст 2', value: 2 },
-                { text: 'Текст 3', value: 3 },
-                { text: 'Текст 4', value: 4 }
+                { text: '1', value: 1 },
+                { text: '2', value: 2 },
+                { text: '3', value: 3 },
+                { text: '4', value: 4 }
             ]}
         />;
 
